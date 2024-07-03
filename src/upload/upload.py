@@ -3,6 +3,8 @@ import os, sys
 from PIL import Image
 
 from src.utils.gpt4 import gen_chat_response_with_gpt4
+from src.utils.hotpepper import verify_hotpepper
+from src.utils.googlemap import verify_googlemap
 
 
 class UploadScreen:
@@ -78,8 +80,11 @@ class UploadScreen:
         self.loading_indicator.visible = True
         self.container.update()
         image = Image.open(self.selected_image_path)
-        result_json, verifycation_str = gen_chat_response_with_gpt4(image)
+        result_json = gen_chat_response_with_gpt4(image)
+        verification_hotpepper = verify_hotpepper(result_json)
+        verification_googlemap = verify_googlemap(result_json)
+        verification = f"{verification_hotpepper}\n{verification_googlemap}"
         self.loading_indicator.visible = False
 
         # 結果画面に遷移
-        self.container.page.go(route=f'/results?result_json={result_json}&verifycation_str={verifycation_str}&image_path={self.selected_image_path}')
+        self.container.page.go(route=f'/results?result_json={result_json}&verifycation_str={verification}&image_path={self.selected_image_path}')

@@ -1,4 +1,4 @@
-from flet import Container, Column, Row, ElevatedButton, Text, colors
+from flet import Container, Column, Row, ElevatedButton, Text, colors, Image, ListView
 import json
 import sys
 
@@ -66,7 +66,7 @@ class ResultsScreen:
             result_data = {}
         self.result_json_viewer = JSONViewer(result_data)
 
-        container.content = Column(
+        scrollable_content = ListView(
             controls=[
                 Text(
                     "Analysis Result",
@@ -89,18 +89,16 @@ class ResultsScreen:
                     size=16,
                     text_align="left"
                 ),
+                Image(src=image_path, fit="contain"),
                 Row([
                     self.back_button,
                     self.save_button,
                 ]),
             ],
-            spacing=20,
-            alignment="start",
-            expand=True  # Columnを縦に広げる
+            adaptive=True,
         )
-
+        container.content = scrollable_content
         container.update()
-
 
     def save_results(self, e):
         # 解析結果をデータベースに保存するロジックを実装
