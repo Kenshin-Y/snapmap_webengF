@@ -6,6 +6,8 @@ import flet as ft
 from src.home.home import HomeScreen
 from src.upload.upload import UploadScreen
 from src.results.results import ResultsScreen
+from src.results.map import MapViewScreen
+from src.list.listview import ListViewScreen
 
 def main(page: Page):
     page.title = "SnapMap"
@@ -21,6 +23,8 @@ def main(page: Page):
     home_screen = HomeScreen()
     upload_screen = UploadScreen()
     results_screen = ResultsScreen()
+    map_screen = MapViewScreen()
+    list_screen = ListViewScreen()
 
     settings_button = IconButton(
         icon=ft.icons.SETTINGS,
@@ -51,7 +55,7 @@ def main(page: Page):
         icon_size=24,
         icon_color=colors.GREY_600,
         hover_color=colors.BLUE_500,
-        on_click=lambda e: page.go("/results")
+        on_click=lambda e: page.go("/map")
     )
 
     list_button = IconButton(
@@ -59,7 +63,7 @@ def main(page: Page):
         icon_size=24,
         icon_color=colors.GREY_600,
         hover_color=colors.BLUE_500,
-        on_click=lambda e: page.go("/results")
+        on_click=lambda e: page.go("/list")
     )
 
     # ヘッダー
@@ -147,6 +151,10 @@ def main(page: Page):
             upload_screen.build(content_container)
         elif route.startswith("/results"):
             results_screen.build(content_container)
+        elif route.startswith("/map"):
+            map_screen.build(content_container)
+        elif route.startswith("/list"):
+            list_screen.build(content_container)
 
         page.update()
 
@@ -157,4 +165,5 @@ def main(page: Page):
     page.go("/home")
 
 if __name__ == "__main__":
-    app(target=main, host="0.0.0.0")
+
+    app(target=main)# , host="0.0.0.0")

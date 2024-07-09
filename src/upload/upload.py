@@ -19,7 +19,7 @@ class UploadScreen:
         self.select_button = ft.ElevatedButton(
             text="画像を選択",
             on_click=self.pick_files,
-            bgcolor=ft.colors.BLUE_500,
+            bgcolor=ft.colors.PURPLE_500,
             color=ft.colors.WHITE,
             height=50,
             width=150
@@ -81,10 +81,15 @@ class UploadScreen:
         self.container.update()
         image = Image.open(self.selected_image_path)
         result_json = gen_chat_response_with_gpt4(image)
-        verification_hotpepper = verify_hotpepper(result_json)
-        verification_googlemap = verify_googlemap(result_json)
-        verification = f"{verification_hotpepper}\n{verification_googlemap}"
+        verification_hotpepper = verify_hotpepper(result_json)  # dict
+        verification_googlemap = verify_googlemap(result_json)  # dict
+
+        # dictをstrに変換
+        # str_result_json = str(result_json).replace("'", '"')
+        # str_verification_hotpepper = str(verification_hotpepper).replace("'", '"')
+        # str_verification_googlemap = str(verification_googlemap).replace("'", '"')
         self.loading_indicator.visible = False
 
         # 結果画面に遷移
-        self.container.page.go(route=f'/results?result_json={result_json}&verifycation_str={verification}&image_path={self.selected_image_path}')
+        self.container.page.go(\
+            route=f'/results?result_json={result_json}&verifycation_hp={verification_hotpepper}&verifycation_gm={verification_googlemap}&image_path={self.selected_image_path}')

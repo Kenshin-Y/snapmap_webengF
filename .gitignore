@@ -162,5 +162,7 @@ cython_debug/
 
 # json
 *.json
-
 *test*
+*.db
+assets/
+*.html

@@ -1,61 +1,92 @@
-from flet import Container, Column, ElevatedButton, ListView, ListTile, Text, colors
+import flet as ft
 
-class HomeScreen:
+class HomeScreen(ft.UserControl):
     def __init__(self):
-        self.container = None
+        super().__init__()
+        self.title = "Home"
 
-    def build(self, container: Container):
-        print("HomeScreen.build")
+    def build(self, container: ft.Container):
         self.container = container
-        self.description = Text(
-            "Results List",
-            color=colors.BLACK,
-            size=16,
-            text_align="center"
-        )
-        self.upload_button = ElevatedButton(
-            text="Upload Image",
-            on_click=self.go_upload,
-            bgcolor=colors.BLUE_500,
-            color=colors.WHITE,
-            height=50,
-            width=200,
-        )
-        self.data_list = ListView(
-            height=300,
-            controls=[]
-        )
+        self.container.content = self._build_content()
+        self.container.update()
 
-        # ここで保存されたデータを取得し、リストに表示
-        self.load_data()
-
-        container.content = Column(
+    def _build_content(self):
+        return ft.ListView(
             controls=[
-                self.description,
-                self.upload_button,
-                self.data_list,
+                ft.Container(content=
+                    ft.Row(controls=[
+                            ft.Image(src="assets/main_bg.png", fit="cover", height=812//3, width=375//3),
+                            ft.Text("新しい地図アプリ\nSnapmap", size=24, weight="bold", color=ft.colors.PURPLE_900)
+                        ],
+                        spacing=10,
+                    ),
+                ),
+                # 今すぐ登録のボタン
+                ft.ElevatedButton(
+                    text="[DEMO] 今すぐ登録する",
+                    bgcolor=ft.colors.PURPLE_700,
+                    color=ft.colors.WHITE,
+                    height=50,
+                    width=100,
+                    on_click=self.go_upload
+                ),
+
+                # Features Section
+                ft.Container(
+                    content=ft.Column(controls=[
+                        ft.Text("特徴", size=28, weight="bold", color=ft.colors.PURPLE_900),
+                        ft.Column(controls=[
+                            ft.Icon(name=ft.icons.SCREENSHOT, size=48, color=ft.colors.PURPLE_700),
+                            ft.Text("AIによる解析", size=16, weight="bold"),
+                            ft.Text("AIがあなたのスクリーンショットを解析し，お店の位置情報を自動で検出します．"),
+                        ], spacing=10, horizontal_alignment="center",),
+                        ft.Column(controls=[
+                            ft.Icon(name=ft.icons.MAP, size=48, color=ft.colors.PURPLE_700),
+                            ft.Text("自動でマップに保存", size=16, weight="bold"),
+                            ft.Text("気になるお店のスクリーンショットを自動解析して位置情報を取得し，マップ上に保存．あなたのカメラロールをマップに．"),
+                        ], spacing=10, horizontal_alignment="center",),  
+                        ft.Column(controls=[    
+                            ft.Icon(name=ft.icons.PEOPLE_ALT, size=48, color=ft.colors.PURPLE_700),
+                            ft.Text("お店をシェア", size=16, weight="bold"),
+                            ft.Text("友達機能を使って，あなたが保存したお店を家族・友達・恋人と共有することができます．"),
+                        ], spacing=10, horizontal_alignment="center",),  
+                    ],
+                    spacing=50,
+                    horizontal_alignment="center",
+                    )
+                ),
+                # 今すぐ登録のボタン
+                ft.ElevatedButton(
+                    text="[DEMO] 今すぐ登録する",
+                    bgcolor=ft.colors.PURPLE_700,
+                    color=ft.colors.WHITE,
+                    height=50,
+                    width=100,
+                    on_click=self.go_upload
+                ),
+
+                # 空白
+                ft.Container(height=20),
+                # CopyRight Section
+                ft.Container(
+                    content=ft.Column(controls=[
+                        ft.Text("© 2021 Snapmap\nAll Rights Reserved\nDeveloped by Flet", size=12, color=ft.colors.GREY_600),
+                        ],
+                        horizontal_alignment="center",
+                    ),
+                ),
             ],
             spacing=20,
-            alignment="start",  # コンテンツを上詰めに配置
-            expand=False  # Columnを縦に広げる
         )
-        container.update()
 
     def go_upload(self, e):
-        self.container.page.go("/upload")
+        self.container.page.go(route=f'/upload')
 
-    def load_data(self):
-        # データベースからデータを取得し、self.data_listに追加
-        # ここではサンプルデータを追加します
-        sample_data = [f'Data {i}' for i in range(1, 11)]
-        for item in sample_data:
-            self.data_list.controls.append(
-                ListTile(
-                    title=Text(item, color=colors.BLACK),
-                    on_click=lambda e, item=item: self.view_details(item)
-                )
-            )
 
-    def view_details(self, item):
-        # データ詳細表示画面に遷移
-        self.container.page.go(f"/details/{item}")
+def main(page: ft.Page):
+    page.title = "Snapmap DemoApp"
+    page.add(HomeScreen())
+
+
+if __name__ == "__main__":
+    ft.app(target=main)
