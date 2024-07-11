@@ -1,11 +1,19 @@
-# A snapmap Flet app
+# グループF_新しい地図アプリ
 
-An example of a minimal Flet app.
-
-To run the app:
-
+完全な機能を提供するには，APIKEYを取得して`secret.json`を作成します．
 ```
-flet run [app_directory]
+{
+    "OPENAI_API_KEY": "XXX",
+    "HOTPEPPER_API_KEY": "XXX",
+    "GOOGLEMAP_API_KEY": "XXX"
+}
 ```
 
-東京って意外と行くとこない（京都の方が優れている）から，外国人観光客をターゲットとしたインバウンドに何か使えないか？
+Windowsコマンドプロンプトで以下を実行します．
+(WSLだと画像選択を行うためにXwindowを使う必要があります)
+```
+$ pip install -r requirements.txt
+$ flet run ./
+```
+
+註: ` pip freeze > .\requirements.txt` しただけなのでいろいろ混ざってます
